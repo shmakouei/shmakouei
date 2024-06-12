@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLS Stream Player</title>
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/7.14.3/video-js.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Select a Stream to Play</h1>
+    <select id="streamSelect">
+        <option value="https://bozztv.com/1gbw5/tintv2/tintv2/playlist.m3u8">Tin TV 2</option>
+        <option value="https://597f64b67707a.streamlock.net/alkerazatv.org/alkerazatv.smil/playlist.m3u8">Alkeraza TV</option>
+        <option value="https://2nbyjjx7y53k-hls-live.5centscdn.com/atvweb/d23299de099088e7444868cd0814f1c7.sdp/playlist.m3u8">ATV Web</option>
+        <option value="http://iptv.arianaafgtv.com/ariana/playlist.m3u8">Ariana TV</option>
+    </select>
+    <br><br>
+    <video-js id="videoPlayer" class="vjs-default-skin" controls preload="auto" width="640" height="268"></video-js>
+
+    <!-- Video.js JavaScript -->
+    <script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
+    <!-- Video.js HLS Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.14.1/dist/videojs-contrib-hls.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var player = videojs('videoPlayer');
+            var streamSelect = document.getElementById('streamSelect');
+
+            streamSelect.addEventListener('change', function() {
+                var selectedStream = streamSelect.value;
+                player.src({
+                    src: selectedStream,
+                    type: 'application/x-mpegURL'
+                });
+                player.play();
+            });
+
+            // Set the first stream as default
+            var event = new Event('change');
+            streamSelect.dispatchEvent(event);
+        });
+    </script>
+</body>
+</html>
