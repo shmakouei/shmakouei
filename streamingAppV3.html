@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLS Stream Player</title>
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/7.14.3/video-js.css" rel="stylesheet" />
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a Channel to Play</h1>
+    <table id="channelTable">
+        <tr data-src="https://bozztv.com/1gbw5/tintv2/tintv2/playlist.m3u8">
+            <td>Tin TV 2</td>
+        </tr>
+        <tr data-src="https://597f64b67707a.streamlock.net/alkerazatv.org/alkerazatv.smil/playlist.m3u8">
+            <td>Alkeraza TV</td>
+        </tr>
+        <tr data-src="https://2nbyjjx7y53k-hls-live.5centscdn.com/atvweb/d23299de099088e7444868cd0814f1c7.sdp/playlist.m3u8">
+            <td>ATV Web</td>
+        </tr>
+        <tr data-src="http://iptv.arianaafgtv.com/ariana/playlist.m3u8">
+            <td>Ariana TV</td>
+        </tr>
+    </table>
+    <br><br>
+    <video-js id="videoPlayer" class="vjs-default-skin" controls preload="auto" width="640" height="268"></video-js>
+
+    <!-- Video.js JavaScript -->
+    <script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
+    <!-- Video.js HLS Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.14.1/dist/videojs-contrib-hls.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var player = videojs('videoPlayer');
+            var table = document.getElementById('channelTable');
+            var rows = table.getElementsByTagName('tr');
+
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].addEventListener('click', function() {
+                    var streamSrc = this.getAttribute('data-src');
+                    player.src({
+                        src: streamSrc,
+                        type: 'application/x-mpegURL'
+                    });
+                    player.play();
+                });
+            }
+
+            // Automatically play the first channel
+            rows[0].click();
+        });
+    </script>
+</body>
+</html>
